@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jarvis – Your Desktop AI Assistant by Sriyans</title>
+  <meta name="description" content="Jarvis is a desktop AI assistant by Sriyans that opens apps, plays music, searches the web, handles files, writes code and documents, manages slides, reads spreadsheets, and more." />
+  <meta name="theme-color" content="#ff9933" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --saffron:#FF9933; /* India saffron */
+      --green:#138808;   /* India green */
+      --white:#ffffff;
+      --ink:#0f172a;
+      --muted:#475569;
+      --card:#ffffffdd;
+      --ring:#2563eb33;
+      --accent:#0ea5e9;
+      --shadow: 0 10px 25px rgba(2,6,23,.12), 0 6px 12px rgba(2,6,23,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif; color:var(--ink); line-height:1.6; 
+      background:
+        radial-gradient(60vmin 60vmin at 50% 10%, #1f29370d, #0000),
+        linear-gradient(180deg,var(--saffron) 0 33%, var(--white) 33% 66%, var(--green) 66%);
+      background-attachment: fixed;
+    }
+    .chakra {
+      position: fixed; inset:0; pointer-events:none; display:grid; place-items:center; opacity:.08; mix-blend-mode:multiply;
+      filter: saturate(.7);
+    }
+    .container{ width:min(1100px,92vw); margin:0 auto; }
+    header{ padding:28px 0 12px; display:flex; justify-content:space-between; align-items:center; gap:16px; }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:42px; height:42px; border-radius:12px; background:linear-gradient(135deg,#111827,#0f172a); box-shadow:var(--shadow); display:grid; place-items:center; color:white; font-weight:800}
+    .brand h1{margin:0; font-size:1.25rem; letter-spacing:.2px}
+    nav a{color:#0b2e13; font-weight:600; text-decoration:none; padding:.5rem .75rem; border-radius:999px; backdrop-filter: blur(8px);}
+    nav a:hover{background:#ffffff55}
+
+    .hero{ position:relative; margin:20px 0 36px; }
+    .hero-card{
+      background:var(--card); border:1px solid #ffffffaa; box-shadow:var(--shadow); border-radius:24px; padding:28px; overflow:hidden;
+      backdrop-filter: blur(8px);
+    }
+    .badge{display:inline-flex; align-items:center; gap:8px; font-size:.82rem; font-weight:700; color:#0f172a; background:#ffffff; border:1px solid #e2e8f0; padding:.35rem .7rem; border-radius:999px}
+    .title{font-size:clamp(1.8rem, 2.8vw + 1rem, 3rem); margin:.5rem 0 .25rem; line-height:1.2}
+    .subtitle{color:var(--muted); margin:0 0 1rem}
+    .cta{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{
+      appearance:none; border:0; background:#0f172a; color:white; padding:.9rem 1.1rem; border-radius:14px; font-weight:800; box-shadow:var(--shadow);
+      text-decoration:none; display:inline-flex; align-items:center; gap:.6rem; transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow:0 12px 28px rgba(2,6,23,.18), 0 6px 12px rgba(2,6,23,.12); background:#111827; }
+    .btn.ghost{background:#ffffff; color:#0f172a; border:1px solid #e2e8f0}
+
+    .grid{ display:grid; grid-template-columns: repeat( auto-fit, minmax(240px,1fr) ); gap:18px; }
+    .card{
+      background:#fffffff2; border:1px solid #e2e8f0; border-radius:20px; padding:18px 18px; box-shadow:var(--shadow);
+    }
+    .card h3{margin:.25rem 0 .25rem; font-size:1.05rem}
+    .muted{color:var(--muted)}
+
+    section{padding:26px 0}
+    section h2{font-size:1.4rem; margin:0 0 .75rem}
+
+    details{ background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:12px 14px; box-shadow:var(--shadow); }
+    summary{ list-style:none; cursor:pointer; font-weight:800; }
+    summary::-webkit-details-marker{ display:none }
+    details + details{ margin-top:10px }
+
+    .pill{display:inline-block; padding:.25rem .55rem; border-radius:999px; background:#f1f5f9; border:1px solid #e2e8f0; font-size:.8rem}
+
+    .kbd{font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:.86rem; background:#0f172a; color:#fff; padding:.18rem .42rem; border-radius:6px}
+
+    footer{ text-align:center; padding:28px 0 60px; color:#0f172a; font-weight:700 }
+    footer .tiny{ display:block; font-weight:600; color:#0f172a; opacity:.8; margin-top:6px }
+
+    /* tag chips */
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+
+    /* floating made-in-india heart */
+    .love{ display:inline-flex; align-items:center; gap:8px }
+
+    /* responsive tweaks */
+    @media (max-width:640px){
+      .hero-card{ padding:20px }
+    }
+  </style>
+</head>
+<body>
+  <!-- Subtle Ashoka Chakra watermark (SVG) -->
+  <div class="chakra" aria-hidden="true">
+    <svg width="320" height="320" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="48" stroke="#1b1b3a" stroke-width="3" />
+      <g stroke="#1b1b3a" stroke-width="2">
+        <circle cx="60" cy="60" r="6"/>
+        <!-- 24 spokes -->
+        <g transform="translate(60,60)">
+          <!-- spokes generated manually -->
+          <line x1="0" y1="-42" x2="0" y2="-6"/>
+          <line x1="10.5" y1="-40.6" x2="1.5" y2="-5.3"/>
+          <line x1="20.6" y1="-36.4" x2="3" y2="-4.5"/>
+          <line x1="29.4" y1="-29.4" x2="4.5" y2="-3"/>
+          <line x1="36.4" y1="-20.6" x2="5.3" y2="-1.5"/>
+          <line x1="40.6" y1="-10.5" x2="6" y2="-0.5"/>
+          <line x1="42" y1="0" x2="6" y2="0"/>
+          <line x1="40.6" y1="10.5" x2="6" y2="0.5"/>
+          <line x1="36.4" y1="20.6" x2="5.3" y2="1.5"/>
+          <line x1="29.4" y1="29.4" x2="4.5" y2="3"/>
+          <line x1="20.6" y1="36.4" x2="3" y2="4.5"/>
+          <line x1="10.5" y1="40.6" x2="1.5" y2="5.3"/>
+          <line x1="0" y1="42" x2="0" y2="6"/>
+          <line x1="-10.5" y1="40.6" x2="-1.5" y2="5.3"/>
+          <line x1="-20.6" y1="36.4" x2="-3" y2="4.5"/>
+          <line x1="-29.4" y1="29.4" x2="-4.5" y2="3"/>
+          <line x1="-36.4" y1="20.6" x2="-5.3" y2="1.5"/>
+          <line x1="-40.6" y1="10.5" x2="-6" y2="0.5"/>
+          <line x1="-42" y1="0" x2="-6" y2="0"/>
+          <line x1="-40.6" y1="-10.5" x2="-6" y2="-0.5"/>
+          <line x1="-36.4" y1="-20.6" x2="-5.3" y2="-1.5"/>
+          <line x1="-29.4" y1="-29.4" x2="-4.5" y2="-3"/>
+          <line x1="-20.6" y1="-36.4" x2="-3" y2="-4.5"/>
+          <line x1="-10.5" y1="-40.6" x2="-1.5" y2="-5.3"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">J</div>
+        <h1>Jarvis by <span title="Creator">Sriyans</span></h1>
+      </div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#commands">Commands</a>
+        <a href="#how">How it Works</a>
+        <a href="#download">Download</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="hero-card">
+        <span class="badge">🇮🇳 Made in India • Desktop AI Assistant</span>
+        <h2 class="title">Your personal AI that opens apps, plays music, writes code, handles documents & more.</h2>
+        <p class="subtitle">Jarvis 1.0 focuses on practical productivity: app control, media playback, voice input/output, web search, file handling, and smart content creation (HTML, Word, Excel, PPT). Built with Python; integrates OpenRouter/Gemini API for reasoning and generation.</p>
+        <div class="cta">
+          <!-- Replace href value with your real download/share link -->
+          <a id="download" class="btn" href="https://wormhole.app/KBjRLy#kykFzgdDLxqfinHwgoQgLw" target="_blank" rel="noopener">⬇️ Download Jarvis.exe</a>
+          <a class="btn ghost" href="#commands">📖 Explore Commands</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>Highlights</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Voice + Multilingual</h3>
+          <p class="muted">Hands‑free with speech recognition & text‑to‑speech. Intent detection supports natural prompts (English/Hindi). Auto‑detects user intent, then routes to the right skill.</p>
+          <div class="tags"><span class="pill">Voice I/O</span><span class="pill">Lang Detect</span><span class="pill">Translator</span></div>
+        </article>
+        <article class="card">
+          <h3>Smart App & Web Control</h3>
+          <p class="muted">Launch Chrome/Spotify/Word/Excel/PowerPoint; search the web; open sites fast. Ask, “search for sodium‑ion battery news” or “open YouTube”.</p>
+          <div class="tags"><span class="pill">Chrome</span><span class="pill">Spotify</span><span class="pill">YouTube</span></div>
+        </article>
+        <article class="card">
+          <h3>Media & Files</h3>
+          <p class="muted">Play/pause/stop media. Open, list, delete files. Get quick file info: “details readme.txt”.</p>
+          <div class="tags"><span class="pill">Play/Pause</span><span class="pill">File Ops</span></div>
+        </article>
+        <article class="card">
+          <h3>AI that Creates</h3>
+          <p class="muted">Generate HTML pages, draft letters, edit docs, craft slides, and manipulate spreadsheets with natural prompts. Also: code writing & debugging.</p>
+          <div class="tags"><span class="pill">HTML</span><span class="pill">Word</span><span class="pill">Excel</span><span class="pill">PPT</span><span class="pill">Code</span></div>
+        </article>
+        <article class="card">
+          <h3>Weather & Utilities</h3>
+          <p class="muted">Ask for weather/forecast, take screenshots, and more. Built to be extended with new skills.</p>
+          <div class="tags"><span class="pill">Weather</span><span class="pill">Screenshot</span><span class="pill">Extensible</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="commands">
+      <h2>Command Catalog (Category‑wise)</h2>
+      <p class="muted">Speak or type these natural phrases. Jarvis maps them to intents using pattern matching and routes them to handlers.</p>
+
+      <details open>
+        <summary>📁 File Operations</summary>
+        <ul>
+          <li><span class="kbd">open report.pdf</span> — open a file</li>
+          <li><span class="kbd">view notes.txt</span> — preview a file</li>
+          <li><span class="kbd">list files</span> / <span class="kbd">show files</span></li>
+          <li><span class="kbd">delete test.py</span></li>
+          <li><span class="kbd">details readme.md</span> / <span class="kbd">tell me about data.csv</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🌐 Web & Online</summary>
+        <ul>
+          <li><span class="kbd">search for sodium‑ion batteries</span></li>
+          <li><span class="kbd">find python list comprehension</span></li>
+          <li><span class="kbd">weather in Bokaro</span> / <span class="kbd">what's the weather</span></li>
+          <li><span class="kbd">open youtube</span> / <span class="kbd">go to google.com</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🖥️ App Control</summary>
+        <ul>
+          <li><span class="kbd">open chrome</span> / <span class="kbd">launch spotify</span></li>
+          <li><span class="kbd">close that window</span> / <span class="kbd">kill excel</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🎵 Media Control</summary>
+        <ul>
+          <li><span class="kbd">play Naatu Naatu on youtube</span></li>
+          <li><span class="kbd">play music</span> / <span class="kbd">pause</span> / <span class="kbd">stop</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>📄 Word Documents</summary>
+        <ul>
+          <li><span class="kbd">create word internship cover letter</span></li>
+          <li><span class="kbd">read word offer.docx</span></li>
+          <li><span class="kbd">edit word resume.docx</span></li>
+          <li><span class="kbd">write application for sick leave</span></li>
+          <li><span class="kbd">edit this to formal tone</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🧮 Excel Spreadsheets</summary>
+        <ul>
+          <li><span class="kbd">create excel monthly budget</span></li>
+          <li><span class="kbd">read excel marks.xlsx</span></li>
+          <li><span class="kbd">edit excel sales to add totals</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>📊 PowerPoint</summary>
+        <ul>
+          <li><span class="kbd">create presentation science exhibition</span></li>
+          <li><span class="kbd">read ppt demo.pptx</span></li>
+          <li><span class="kbd">add slide to demo.pptx</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🧠 AI Interactions</summary>
+        <ul>
+          <li><span class="kbd">write a code in python to sort numbers</span></li>
+          <li><span class="kbd">debug this error: index out of range</span></li>
+          <li><span class="kbd">tell me a joke</span> / <span class="kbd">tell a story</span></li>
+        </ul>
+      </details>
+
+      <details>
+        <summary>🧰 Utilities</summary>
+        <ul>
+          <li><span class="kbd">take a screenshot</span> / <span class="kbd">capture my screen</span></li>
+          <li><span class="kbd">forecast for tomorrow</span></li>
+        </ul>
+      </details>
+    </section>
+
+    <section id="how">
+      <h2>How It Works</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>1) Intent Detection</h3>
+          <p class="muted">User input → normalized → matched against regex patterns (e.g., <span class="kbd">create html landing page</span> → <em>ai_html_write</em>).</p>
+        </div>
+        <div class="card">
+          <h3>2) Command Dispatch</h3>
+          <p class="muted">The dispatcher routes intents to specialized handlers (apps/files/web/media/documents, etc.).</p>
+        </div>
+        <div class="card">
+          <h3>3) Skills & Tools</h3>
+          <p class="muted">Handlers leverage Python libraries plus LLM APIs (OpenRouter/Gemini) for generation, editing and reasoning.</p>
+        </div>
+        <div class="card">
+          <h3>4) Voice & Feedback</h3>
+          <p class="muted">Speech recognition, language detection, and TTS give a conversational, multilingual experience.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="download">
+      <h2>Download & Try</h2>
+      <div class="card">
+        <p class="muted">Get the Windows build (.exe) and a simple setup that asks your name for a personalized experience. You can also compile locally from source.</p>
+        <div class="cta">
+          <!-- TODO: Replace the placeholder link below with your real file link -->
+          <a class="btn" href="YOUR_DOWNLOAD_LINK_HERE" target="_blank" rel="noopener">⬇️ Download Jarvis.exe</a>
+          <a class="btn ghost" href="#home">↑ Back to Top</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Notes</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>System Requirements</h3>
+          <ul>
+            <li>Windows PC (tested with i3 + 8GB RAM, no dedicated GPU)</li>
+            <li>Microphone for voice features</li>
+            <li>Internet for web search & AI features (OpenRouter/Gemini)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Privacy</h3>
+          <p class="muted">Jarvis processes your prompts locally and only sends necessary requests to APIs for AI features. You control what you share.</p>
+        </div>
+        <div class="card">
+          <h3>Extending Jarvis</h3>
+          <p class="muted">Add new patterns to the Intent Detector and implement a handler. Jarvis auto‑detects prompt type (code, file ops, jokes, etc.).</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="love">© <span id="year"></span> Sriyans • With ❤️ & chai • <strong>Made in India</strong></div>
+      <small class="tiny">All rights reserved</small>
+    </footer>
+  </div>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for in‑page links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id=a.getAttribute('href');
+        if(id && id !== '#'){
+          const el=document.querySelector(id);
+          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
