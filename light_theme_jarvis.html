@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jarvis — Your Desktop AI Assistant by Sriyans (Light Theme)</title>
+  <meta name="description" content="Jarvis is a desktop AI assistant by Sriyans that opens apps, plays music, searches the web, handles files, writes code and documents, manages slides, reads spreadsheets, and more." />
+  <meta name="theme-color" content="#0066ff" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDY2ZmYiLz4KPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiM2NjY2ZmYiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDBjY2ZmIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNncmFkKSIvPgo8dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJJbnRlciwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPko8L3RleHQ+Cjwvc3ZnPgo=" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Futuristic light color palette */
+      --primary-blue: #0066ff;
+      --primary-purple: #6666ff;
+      --primary-cyan: #00ccff;
+      --accent-orange: #ff6600;
+      --neon-pink: #ff0099;
+      --light-bg: #f8faff;
+      --lighter-bg: #ffffff;
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a5568;
+      --text-accent: var(--primary-blue);
+      --border-glow: rgba(0, 102, 255, 0.3);
+      --shadow-neon: 0 0 20px rgba(0, 102, 255, 0.2), 0 0 40px rgba(102, 102, 255, 0.1);
+      --gradient-primary: linear-gradient(135deg, var(--primary-blue), var(--primary-purple), var(--primary-cyan));
+      --gradient-secondary: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+      --gradient-accent: linear-gradient(135deg, var(--accent-orange), var(--neon-pink));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--light-bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 102, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(102, 102, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(0, 204, 255, 0.05) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-20px) rotate(120deg); }
+      66% { transform: translateY(10px) rotate(240deg); }
+    }
+
+    /* Circuit pattern overlay */
+    .circuit-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.02;
+      background-image: 
+        linear-gradient(90deg, var(--primary-blue) 1px, transparent 1px),
+        linear-gradient(var(--primary-blue) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: -1;
+      animation: circuit-move 30s linear infinite;
+    }
+
+    @keyframes circuit-move {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .container {
+      width: min(1200px, 95vw);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header - Fixed positioning for better scroll behavior */
+    header {
+      padding: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-glow);
+      margin-bottom: 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 250, 255, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 102, 255, 0.1);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: var(--gradient-primary);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.5rem;
+      box-shadow: var(--shadow-neon);
+      animation: logo-pulse 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .logo::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 14px;
+      padding: 2px;
+      background: var(--gradient-primary);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: xor;
+      animation: border-spin 4s linear infinite;
+    }
+
+    @keyframes logo-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); box-shadow: var(--shadow-neon), 0 0 60px rgba(0, 102, 255, 0.3); }
+    }
+
+    @keyframes border-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 102, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--gradient-secondary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 25px;
+    }
+
+    nav a:hover {
+      color: white;
+      transform: translateY(-2px);
+      border-color: var(--border-glow);
+      box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
+    }
+
+    nav a:hover::before {
+      opacity: 1;
+    }
+
+    /* Hero Section */
+    .hero {
+      margin: 60px 0;
+      position: relative;
+    }
+
+    .hero-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-neon), 0 20px 60px rgba(0, 102, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient-primary);
+      animation: scan 3s ease-in-out infinite;
+    }
+
+    @keyframes scan {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      50% { transform: translateX(100%); opacity: 1; }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: white;
+      background: var(--gradient-primary);
+      padding: 8px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      animation: badge-glow 2s ease-in-out infinite alternate;
+      box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+    }
+
+    @keyframes badge-glow {
+      0% { box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3); }
+      100% { box-shadow: 0 8px 30px rgba(0, 102, 255, 0.5), 0 0 40px rgba(102, 102, 255, 0.3); }
+    }
+
+    .title {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 20px 0;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+
+    .cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      background: var(--gradient-primary);
+      color: white;
+      padding: 16px 28px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 102, 255, 0.3);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 102, 255, 0.4);
+    }
+
+    .btn:hover::before {
+      transform: translateX(100%);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border: 2px solid var(--primary-blue);
+      color: var(--primary-blue);
+      box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+    }
+
+    .btn.ghost:hover {
+      background: var(--primary-blue);
+      color: white;
+      box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
+    }
+
+    /* Grid and Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 40px 0;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 24px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 102, 255, 0.05);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient-secondary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary-blue);
+      box-shadow: 0 15px 50px rgba(0, 102, 255, 0.15);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-accent);
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      background: rgba(0, 102, 255, 0.1);
+      border: 1px solid rgba(0, 102, 255, 0.2);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary-blue);
+    }
+
+    /* Sections */
+    section {
+      margin: 80px 0;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Command Details */
+    details {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 102, 255, 0.05);
+    }
+
+    details:hover {
+      border-color: var(--primary-blue);
+      box-shadow: 0 8px 30px rgba(0, 102, 255, 0.1);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    summary {
+      list-style: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-accent);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: '▶';
+      transition: transform 0.3s ease;
+      color: var(--primary-blue);
+    }
+
+    details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    details ul {
+      margin-top: 16px;
+      list-style: none;
+    }
+
+    details li {
+      margin: 8px 0;
+      padding-left: 20px;
+      color: var(--text-secondary);
+    }
+
+    .kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      background: var(--lighter-bg);
+      color: var(--primary-blue);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 2px 4px rgba(0, 102, 255, 0.1);
+    }
+
+    /* Contact Section */
+    .contact-form {
+      background: var(--glass-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-neon);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text-accent);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-glow);
+      border-radius: 8px;
+      background: var(--lighter-bg);
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 15px rgba(0, 102, 255, 0.2);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      border-top: 1px solid var(--border-glow);
+      margin-top: 80px;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .love {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .tiny {
+      display: block;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      opacity: 0.8;
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--primary-blue);
+      border-radius: 50%;
+      animation: float-particle 12s linear infinite;
+      box-shadow: 0 0 6px rgba(0, 102, 255, 0.5);
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile Navigation */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-toggle:hover {
+      background: rgba(0, 102, 255, 0.1);
+      color: var(--primary-blue);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+        position: relative;
+      }
+      
+      .nav-toggle {
+        display: block;
+      }
+      
+      nav {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 4px;
+        margin-top: 16px;
+        background: var(--glass-bg);
+        border-radius: 12px;
+        padding: 16px;
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-glow);
+      }
+      
+      nav.active {
+        display: flex;
+      }
+      
+      nav a {
+        padding: 16px 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      
+      .hero-card {
+        padding: 24px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .cta {
+        flex-direction: column;
+      }
+      
+      .brand h1 {
+        font-size: 1.2rem;
+      }
+      
+      .title {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        width: 90vw;
+      }
+      
+      .hero-card {
+        padding: 20px;
+      }
+      
+      .brand {
+        gap: 12px;
+      }
+      
+      .logo {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+
+    /* Scroll animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* Additional futuristic elements */
+    .hologram-effect {
+      position: relative;
+    }
+
+    .hologram-effect::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 102, 255, 0.1) 50%,
+        transparent 100%
+      );
+      animation: hologram-scan 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes hologram-scan {
+      0%, 100% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Circuit pattern background -->
+  <div class="circuit-bg"></div>
+
+  <!-- Floating particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">J</div>
+        <h1>Jarvis by <span title="Creator">Sriyans</span></h1>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+      <nav id="nav">
+        <a href="#features">Features</a>
+        <a href="#commands">Commands</a>
+        <a href="#how">How it Works</a>
+        <a href="#contact">Contact</a>
+        <a href="#download">Download</a>
+        <a href="index.html">Dark Theme</a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-card hologram-effect">
+        <span class="badge">🚀 Made in India • Desktop AI Assistant</span>
+        <h2 class="title">Your personal AI that opens apps, plays music, writes code, handles documents & more.</h2>
+        <p class="subtitle">Jarvis 1.0 focuses on practical productivity: app control, media playback, voice input/output, web search, file handling, and smart content creation (HTML, Word, Excel, PPT). Built with Python; integrates OpenRouter/Gemini API for reasoning and generation.</p>
+        <div class="cta">
+          <a id="download" class="btn" href="https://drive.google.com/uc?export=download&id=1G20ftQuDg3_MGzNPyA29ERA0lzdGnFii" target="_blank" rel="noopener">⬇️ Download Jarvis.exe</a>
+          <a class="btn ghost" href="#commands">📖 Explore Commands</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+      <h2>🔮 Advanced Capabilities</h2>
+      <div class="grid">
+        <article class="card"><h3>🎙️ Voice + Multilingual</h3><p>Hands-free with speech recognition & text-to-speech. Intent detection supports natural prompt (English/Hindi). Auto-detects user intent, then routes to the right skill.</p><div class="tags"><span class="pill">Voice I/O</span><span class="pill">Lang Detect</span><span class="pill">Translator</span></div></article>
+        <article class="card"><h3>🌐 Smart App & Web Control</h3><p>Launch Chrome/Spotify/Word/Excel/PowerPoint; search the web; open sites fast. Ask, "search for sodium-ion battery news" or "open YouTube".</p><div class="tags"><span class="pill">Chrome</span><span class="pill">Spotify</span><span class="pill">YouTube</span></div></article>
+        <article class="card"><h3>🎵 Media & Files</h3><p>Play/pause/top media. Open, list, delete files. Get quick file info: "details readme.txt".</p><div class="tags"><span class="pill">Play/Pause</span><span class="pill">File Ops</span></div></article>
+        <article class="card"><h3>🤖 AI that Creates</h3><p>Generate HTML pages, draft letters, edit docs, craft slides, and manipulate spreadsheets with natural prompts. Also: code writing & debugging.</p><div class="tags"><span class="pill">HTML</span><span class="pill">Word</span><span class="pill">Excel</span><span class="pill">PPT</span><span class="pill">Code</span></div></article>
+        <article class="card"><h3>⚡ Weather & Utilities</h3><p>Ask for weather/forecast, take screenshots, and more. Built to be extended with new skills.</p><div class="tags"><span class="pill">Weather</span><span class="pill">Screenshot</span><span class="pill">Extensible</span></div></article>
+        <article class="card"><h3>🔗 Neural Networks</h3><p>Advanced AI reasoning powered by cutting-edge language models. Contextual understanding and intelligent response generation.</p><div class="tags"><span class="pill">OpenRouter</span><span class="pill">Gemini</span><span class="pill">Neural AI</span></div></article>
+      </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section id="commands">
+      <h2>⚡ Command Matrix</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 30px;">Speak or type these natural phrases. Jarvis maps them to intents using pattern matching and routes them to handlers.</p>
+
+      <details open><summary>📁 File Operations</summary><ul><li><span class="kbd">open report.pdf</span> — open a file</li><li><span class="kbd">view notes.txt</span> — preview a file</li><li><span class="kbd">list files</span> / <span class="kbd">show files</span></li><li><span class="kbd">delete test.py</span></li><li><span class="kbd">details readme.md</span> / <span class="kbd">tell me about data.csv</span></li></ul></details>
+
+      <details><summary>🌐 Web & Online</summary><ul><li><span class="kbd">search for sodium-ion batteries</span></li><li><span class="kbd">find python list comprehension</span></li><li><span class="kbd">weather in Bokaro</span> / <span class="kbd">what's the weather</span></li><li><span class="kbd">open youtube</span> / <span class="kbd">go to google.com</span></li></ul></details>
+
+      <details><summary>🖥️ App Control</summary><ul><li><span class="kbd">open chrome</span> / <span class="kbd">launch spotify</span></li><li><span class="kbd">close that window</span> / <span class="kbd">kill excel</span></li></ul></details>
+
+      <details><summary>🎵 Media Control</summary><ul><li><span class="kbd">play Naatu Naatu on youtube</span></li><li><span class="kbd">play music</span> / <span class="kbd">pause</span> / <span class="kbd">stop</span></li></ul></details>
+
+      <details><summary>📄 Word Documents</summary><ul><li><span class="kbd">create word internship cover letter</span></li><li><span class="kbd">read word offer.docx</span></li><li><span class="kbd">edit word resume.docx</span></li><li><span class="kbd">write application for sick leave</span></li><li><span class="kbd">edit this to formal tone</span></li></ul></details>
+
+      <details><summary>🧮 Excel Spreadsheets</summary><ul><li><span class="kbd">create excel monthly budget</span></li><li><span class="kbd">read excel marks.xlsx</span></li><li><span class="kbd">edit excel sales to add totals</span></li></ul></details>
+
+      <details><summary>📊 PowerPoint</summary><ul><li><span class="kbd">create presentation science exhibition</span></li><li><span class="kbd">read ppt demo.pptx</span></li><li><span class="kbd">add slide to demo.pptx</span></li></ul></details>
+
+      <details><summary>🧠 AI Interactions</summary><ul><li><span class="kbd">write a code in python to sort numbers</span></li><li><span class="kbd">debug this error: index out of range</span></li><li><span class="kbd">tell me a joke</span> / <span class="kbd">tell a story</span></li></ul></details>
+
+      <details><summary>🧰 Utilities</summary><ul><li><span class="kbd">take a screenshot</span> / <span class="kbd">capture my screen</span></li><li><span class="kbd">forecast for tomorrow</span></li></ul></details>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how">
+      <h2>🔧 How It Works</h2>
+      <div class="grid">
+        <div class="card"><h3>1) Intent Detection</h3><p>User input → normalized → matched against regex patterns (e.g., <span class="kbd">create html landing page</span> → <em>ai_html_write</em>).</p></div>
+        <div class="card"><h3>2) Command Dispatch</h3><p>The dispatcher routes intents to specialized handlers (apps/files/web/media/documents, etc.).</p></div>
+        <div class="card"><h3>3) Skills & Tools</h3><p>Handlers leverage Python libraries plus LLM APIs (OpenRouter/Gemini) for generation, editing and reasoning.</p></div>
+        <div class="card"><h3>4) Voice & Feedback</h3><p>Speech recognition, language detection, and TTS give a conversational, multilingual experience.</p></div>
+      </div>
+    </section>
+
+    <!-- Notes Section -->
+    <section id="faq">
+      <h2>📝 Notes</h2>
+      <div class="grid">
+        <div class="card"><h3>System Requirements</h3><ul><li>Windows PC (tested with i3 + 8GB RAM, no dedicated GPU)</li><li>Microphone for voice features</li><li>Internet for web search & AI features (OpenRouter/Gemini)</li></ul></div>
+        <div class="card"><h3>Privacy</h3><p>Jarvis processes your prompts locally and only sends necessary requests to APIs for AI features. You control what you share.</p></div>
+        <div class="card"><h3>Extending Jarvis</h3><p>Add new patterns to the Intent Detector and implement a handler. Jarvis auto‑detects prompt type (code, file ops, jokes, etc.).</p></div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>📧 Contact</h2>
+      <div class="card">
+        <h3>About the Creator</h3>
+        <p>Hi, I'm Sriyans, a passionate Class 10 student and programmer from India. I love creating innovative solutions with code and exploring the endless possibilities of technology.</p>
+        <p>My skills include Python, Java, HTML, CSS, JavaScript, and I'm constantly learning new technologies. Jarvis is my passion project that combines my love for AI and practical problem-solving.</p>
+        <p>Feel free to reach out to me for collaborations, questions, or just to say hello!</p>
+        <div class="tags"><span class="pill">Python</span><span class="pill">Java</span><span class="pill">HTML/CSS</span><span class="pill">JavaScript</span><span class="pill">AI/ML</span></div>
+        <div style="margin-top: 20px;"><a href="mailto:sriyansraj02@gmail.com" class="btn">📧 sriyansraj02@gmail.com</a></div>
+      </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download">
+      <h2>⬇️ Download & Try</h2>
+      <div class="card">
+        <p>Get the Windows build (.exe) and a simple setup that asks your name for a personalized experience. You can also compile locally from source.</p>
+        <div class="cta"><a class="btn" href="https://drive.google.com/uc?export=download&id=1G20ftQuDg3_MGzNPyA29ERA0lzdGnFii" target="_blank" rel="noopener">⬇️ Download Jarvis.exe</a><a class="btn ghost" href="#home">↑ Back to Top</a></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="love">© <span id="year"></span> Sriyans • With ❤️ & chai • <strong>Made in India</strong></div>
+      <small class="tiny">All rights reserved</small>
+    </footer>
+  </div>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile navigation toggle
+    const navToggle = document.getElementById('navToggle');
+    const nav = document.getElementById('nav');
+    navToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      navToggle.textContent = nav.classList.contains('active') ? '✕' : '☰';
+    });
+    nav.addEventListener('click', (e) => {
+      if (e.target.tagName === 'A') {
+        nav.classList.remove('active');
+        navToggle.textContent = '☰';
+      }
+    });
+
+    // Floating particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 50;
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const size = Math.random() * 3 + 1;
+        const delay = Math.random() * 10;
+        particle.style.left = `${posX}vw`;
+        particle.style.top = `${posY}vh`;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.animationDelay = `${delay}s`;
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a
