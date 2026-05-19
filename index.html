@@ -3,9 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jarvis — Your Desktop AI Assistant by Sriyans</title>
-  <meta name="description" content="Jarvis is a desktop AI assistant by Sriyans that opens apps, plays music, searches the web, handles files, writes code and documents, manages slides, reads spreadsheets, and more." />
+  
+  <!-- Primary SEO -->
+  <title>Jarvis AI Assistant — Free Download for PC | Desktop AI by Sriyans</title>
+  <meta name="description" content="Download Jarvis AI Assistant free for PC. Jarvis AI opens apps, plays music, searches the web, writes code, handles Word/Excel/PPT documents & more. Free desktop AI assistant for Windows — no GPU needed." />
+  <meta name="keywords" content="Jarvis AI, Jarvis AI assistant, Jarvis AI download, jarvis ai assistant for pc, free download, desktop AI assistant, Jarvis download, AI assistant Windows, voice assistant PC, Jarvis AI free" />
+  <meta name="author" content="Sriyans" />
+  <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#00f5ff" />
+
+  <!-- Open Graph for social sharing -->
+  <meta property="og:title" content="Jarvis AI Assistant — Free Download for PC" />
+  <meta property="og:description" content="Download Jarvis AI free. Voice-controlled desktop assistant for Windows — opens apps, plays music, writes code, handles documents & more." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jarvis AI Assistant — Free PC Download" />
+  <meta name="twitter:description" content="Free AI assistant for Windows PC. Voice control, app launcher, document writer, web searcher & more. Download Jarvis AI now." />
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Jarvis AI Assistant",
+    "operatingSystem": "Windows",
+    "applicationCategory": "UtilitiesApplication",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Jarvis AI is a free desktop AI assistant for PC that opens apps, plays music, searches the web, writes code, and handles Word, Excel & PowerPoint documents using voice or text commands.",
+    "author": { "@type": "Person", "name": "Sriyans" },
+    "downloadUrl": "https://archive.org/download/jarvis-assistant/Jarvis%20Assistant.exe",
+    "softwareVersion": "4.0"
+  }
+  </script>
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjAwZmYiLz4KPHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiM4YjVjZjYiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDBmNWZmIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNncmFkKSIvPgo8dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJJbnRlciwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSIxOCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPko8L3RleHQ+Cjwvc3ZnPgo=" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -342,6 +375,13 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 24px;
       margin: 40px 0;
+    }
+
+    /* Desktop grid symmetry overrides */
+    @media (min-width: 1025px) {
+      #features .grid { grid-template-columns: repeat(3, 1fr); }
+      #how .grid { grid-template-columns: repeat(4, 1fr); }
+      #faq .grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     .card {
@@ -686,19 +726,43 @@
     }
 
     /* Scroll animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .stagger > *:nth-child(1) { transition-delay: 0s; }
+    .stagger > *:nth-child(2) { transition-delay: 0.1s; }
+    .stagger > *:nth-child(3) { transition-delay: 0.2s; }
+    .stagger > *:nth-child(4) { transition-delay: 0.3s; }
+    .stagger > *:nth-child(5) { transition-delay: 0.4s; }
+    .stagger > *:nth-child(6) { transition-delay: 0.5s; }
 
-    .animate-in {
-      animation: fadeInUp 0.6s ease-out forwards;
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      display: flex; gap: 0; margin: 40px 0 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border-glow);
+      border-radius: 18px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 245, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+    .stat-item {
+      flex: 1; text-align: center; padding: 22px 16px;
+      border-right: 1px solid rgba(0, 245, 255, 0.1);
+      transition: background 0.25s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(0, 245, 255, 0.05); }
+    .stat-num { font-size: 1.7rem; font-weight: 800; background: var(--gradient-primary); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .stat-label { font-size: 0.78rem; color: var(--text-secondary); font-weight: 600; margin-top: 4px; letter-spacing: 0.03em; text-transform: uppercase; }
+
+    @media (max-width: 768px) {
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(0, 245, 255, 0.1); }
+      .stat-item:last-child { border-bottom: none; }
     }
   </style>
 </head>
@@ -729,20 +793,29 @@
     </header>
 
     <section class="hero" id="home">
-      <div class="hero-card">
-        <span class="badge">🚀 Made in India • Desktop AI Assistant</span>
-        <h2 class="title">Your personal AI that opens apps, plays music, writes code, handles documents & more.</h2>
-        <p class="subtitle">Jarvis 4.0 focuses on practical productivity: app control, media playback, voice input/output, web search, file handling, and smart content creation (HTML, Word, Excel, PPT). Built with Python; integrates OpenRouter/Gemini API for reasoning and generation.</p>
+      <div class="hero-card reveal visible">
+        <span class="badge">🚀 Made in India &bull; Free Desktop AI Assistant</span>
+        <h2 class="title">Jarvis AI — Free Desktop AI Assistant for PC. Voice control, app launch, code writing &amp; more.</h2>
+        <p class="subtitle">Download <strong>Jarvis AI</strong> free for Windows. Jarvis AI assistant opens apps, plays music, searches the web, writes code, creates Word/Excel/PPT documents, and handles files — all with a voice or text command. No GPU needed.</p>
         <div class="cta">
-          <a id="download" class="btn" href="https://archive.org/download/jarvis-assistant/Jarvis%20Assistant.exe" target="_blank" rel="noopener">⬇️ Download Jarvis.exe</a>
-          <a class="btn ghost" href="#commands">📖 Explore Commands</a>
+          <a id="download" class="btn" href="https://archive.org/download/jarvis-assistant/Jarvis%20Assistant.exe" target="_blank" rel="noopener noreferrer">⬇️ Free Download — Jarvis AI</a>
+          <a class="btn ghost" href="#features">✨ See Features</a>
         </div>
+      </div>
+      
+      <!-- Stats bar -->
+      <div class="stats-bar reveal" style="transition-delay:.2s">
+        <div class="stat-item"><div class="stat-num">4.0</div><div class="stat-label">Latest Version</div></div>
+        <div class="stat-item"><div class="stat-num">Free</div><div class="stat-label">Always Free</div></div>
+        <div class="stat-item"><div class="stat-num">30+</div><div class="stat-label">Commands</div></div>
+        <div class="stat-item"><div class="stat-num">Windows</div><div class="stat-label">Platform</div></div>
       </div>
     </section>
 
-    <section id="features">
-      <h2>🔮 Advanced Capabilities</h2>
-      <div class="grid">
+    <section id="features" class="reveal">
+      <h2>🔮 Jarvis AI — Advanced Capabilities</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 30px;">Everything your Jarvis AI assistant can do right out of the box.</p>
+      <div class="grid stagger">
         <article class="card">
           <h3>🎙️ Voice + Multilingual</h3>
           <p>Hands-free with speech recognition & text-to-speech. Intent detection supports natural prompts (English/Hindi). Auto-detects user intent, then routes to the right skill.</p>
@@ -954,13 +1027,11 @@
     // Mobile navigation toggle
     const navToggle = document.getElementById('navToggle');
     const nav = document.getElementById('nav');
-    
     navToggle.addEventListener('click', () => {
       nav.classList.toggle('active');
       navToggle.textContent = nav.classList.contains('active') ? '✕' : '☰';
     });
-
-    // Close mobile nav when clicking on a link
+    // Close mobile menu when clicking a link
     nav.addEventListener('click', (e) => {
       if (e.target.tagName === 'A') {
         nav.classList.remove('active');
@@ -968,55 +1039,58 @@
       }
     });
 
-    // Create floating particles
-    function createParticles() {
-      const particlesContainer = document.getElementById('particles');
-      const particleCount = 50;
-      
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        
-        // Random position
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        
-        // Random size
-        const size = Math.random() * 3 + 1;
-        
-        // Random animation delay
-        const delay = Math.random() * 10;
-        
-        particle.style.left = `${posX}vw`;
-        particle.style.top = `${posY}vh`;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.animationDelay = `${delay}s`;
-        
-        particlesContainer.appendChild(particle);
-      }
-    }
-    
     // Smooth scroll for in-page links
-   document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const id=a.getAttribute('href');
-        if(id && id !== '#'){
-          const el=document.querySelector(id);
-          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id && id !== '#') {
+          const el = document.querySelector(id);
+          if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         }
       });
     });
-            
-            // Close mobile menu if open
-            if (nav.classList.contains('active')) {
-              nav.classList.remove('active');
-              navToggle.textContent = '☰';
-            }
+
+    // Dark theme multi-color particles
+    const DARK_COLORS = ['#00f5ff','#8b5cf6','#ff00ff','#ffd700','#0099ff'];
+    function createParticles() {
+      const pc = document.getElementById('particles');
+      for (let i = 0; i < 40; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const sz = Math.random() * 4 + 1; // Slightly smaller for dark theme
+        const color = DARK_COLORS[Math.floor(Math.random() * DARK_COLORS.length)];
+        Object.assign(p.style, {
+          left: Math.random() * 100 + 'vw',
+          top: Math.random() * 100 + 'vh',
+          width: sz + 'px', height: sz + 'px',
+          background: color,
+          boxShadow: `0 0 ${sz * 3}px ${color}`, // More pronounced glow for dark mode
+          animationDelay: Math.random() * 14 + 's',
+          animationDuration: (Math.random() * 8 + 10) + 's'
+        });
+        pc.appendChild(p);
+      }
+    }
     
-    
-    // Initialize particles on load
-    window.addEventListener('load', createParticles);
+    // Scroll-reveal with IntersectionObserver
+    function initReveal() {
+      const targets = document.querySelectorAll('.reveal, .stagger > *');
+      targets.forEach(el => {
+        if (!el.classList.contains('reveal')) el.classList.add('reveal');
+      });
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); }
+        });
+      }, { threshold: 0.02, rootMargin: '0px 0px -20px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      createParticles();
+      initReveal();
+    });
   </script>
 </body>
 </html>
